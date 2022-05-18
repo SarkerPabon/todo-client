@@ -25,11 +25,11 @@ const AddTask = () => {
 		console.log(task);
 
 		axios
-			.post("http://localhost:5000/tasks", { ...task })
+			.post(`https://todos-hero.herokuapp.com/tasks`, { ...task })
 			.then((response) => {
 				// console.log(response);
 				toast.success("Add Task Successfully", { toastId: "add_task" });
-				navigate("/products");
+				navigate("/");
 			})
 			.catch((error) => console.log(error));
 	};
@@ -38,7 +38,7 @@ const AddTask = () => {
 		<div className='container my-5 border broder-secondary'>
 			<div className='row justify-content-center'>
 				<div className='col-sm-12 col-md-6'>
-					<h1 className='text-center text-secondary my-3'>Add Product</h1>
+					<h1 className='text-center text-secondary my-3'>Add Task</h1>
 					<form onSubmit={handleSubmit}>
 						<div className='form-floating mb-3'>
 							<input
