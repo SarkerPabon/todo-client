@@ -22,7 +22,7 @@ const AddTask = () => {
 
 		const task = { name, description, email: user.email, completed: false };
 
-		console.log(task);
+		// console.log(task);
 
 		axios
 			.post(`https://todos-hero.herokuapp.com/tasks`, { ...task })

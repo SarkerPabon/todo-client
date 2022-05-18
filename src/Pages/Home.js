@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Home = () => {
 	const [tasks, setTasks] = useState([]);
@@ -16,6 +16,26 @@ const Home = () => {
 				console.log(error);
 			});
 	}, [tasks]);
+
+	// Delete
+	const handleDelete = (_id, name) => {
+		const confirmation = window.confirm(
+			`Ary you sure to delete the task: ${name}`
+		);
+		if (confirmation) {
+			axios
+				.delete(`https://todos-hero.herokuapp.com/tasks/${_id}`)
+				.then((response) => {
+					toast.warning("Delete Successfully", {
+						id: "task_delete",
+					});
+
+					const restOfTasks = tasks.filter((task) => task._id !== _id);
+					setTasks(restOfTasks);
+				})
+				.catch((error) => console.log(error));
+		}
+	};
 
 	return (
 		<div className='container my-5 border broder-secondary'>
@@ -41,13 +61,13 @@ const Home = () => {
 												<td>{task.name}</td>
 												<td>{task.description}</td>
 												<td>
-													<Link
-														to={`/tasks/${task._id}`}
-														className='btn btn-outline-secondary mb-1'
-													>
+													<button className='btn btn-outline-secondary mb-1'>
 														{task.completed ? "Completed" : "Not Complete"}
-													</Link>{" "}
-													<button className='btn btn-outline-danger mb-1'>
+													</button>{" "}
+													<button
+														onClick={() => handleDelete(task._id, task.name)}
+														className='btn btn-outline-danger mb-1'
+													>
 														Delete
 													</button>
 												</td>
