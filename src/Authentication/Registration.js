@@ -29,7 +29,7 @@ const Registration = () => {
 	const [updateProfile] = useUpdateProfile(auth);
 
 	if (user) {
-		console.log("Registration User: ", user.user);
+		// console.log("Registration User: ", user.user);
 		return <Navigate to={from} replace={true} />;
 	}
 

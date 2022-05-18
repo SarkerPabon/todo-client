@@ -1,14 +1,17 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { toast } from "react-toastify";
+import auth from "../firebase.init";
 
 const Home = () => {
 	const [tasks, setTasks] = useState([]);
-	// const [loading, setLoading] = useState(true);
+	const [user] = useAuthState(auth);
+	const email = user.email;
 
 	useEffect(() => {
 		axios
-			.get(`https://todos-hero.herokuapp.com/tasks`)
+			.get(`http://localhost:5000/tasks?email=${email}`)
 			.then((response) => {
 				setTasks(response.data);
 			})
@@ -16,6 +19,16 @@ const Home = () => {
 				console.log(error);
 			});
 	}, [tasks]);
+
+	// Update
+	const handleComplete = (_id, completed) => {
+		axios
+			.patch(`https://todos-hero.herokuapp.com/tasks/${_id}`, {
+				completed: !completed,
+			})
+			.then((response) => console.log(response))
+			.catch((error) => console.log(error));
+	};
 
 	// Delete
 	const handleDelete = (_id, name) => {
@@ -50,7 +63,7 @@ const Home = () => {
 										<th scope='col'>#</th>
 										<th scope='col'>Task Name</th>
 										<th scope='col'>Task Description</th>
-										<th scope='col'>Actions</th>
+										<th colSpan='2'>Actions</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -58,12 +71,34 @@ const Home = () => {
 										return (
 											<tr key={task._id}>
 												<th scope='row'>{index + 1}</th>
-												<td>{task.name}</td>
-												<td>{task.description}</td>
+												<td
+													className={
+														task.completed
+															? "text-decoration-line-through"
+															: " "
+													}
+												>
+													{task.name}
+												</td>
+												<td
+													className={
+														task.completed
+															? "text-decoration-line-through"
+															: " "
+													}
+												>
+													{task.description}
+												</td>
 												<td>
-													<button className='btn btn-outline-secondary mb-1'>
+													<button
+														onClick={() =>
+															handleComplete(task._id, task.completed)
+														}
+														className='btn btn-outline-secondary mb-1'
+													>
 														{task.completed ? "Completed" : "Not Complete"}
 													</button>{" "}
+													&nbsp;
 													<button
 														onClick={() => handleDelete(task._id, task.name)}
 														className='btn btn-outline-danger mb-1'

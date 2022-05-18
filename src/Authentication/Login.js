@@ -4,6 +4,7 @@ import { Link, Navigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import auth from "../firebase.init";
 import Loader from "../Pages/Share/Loader";
+import SocialLogin from "./SocialLogin";
 
 const Login = () => {
 	const [email, setEmail] = useState("");
@@ -35,7 +36,7 @@ const Login = () => {
 	}
 
 	if (user) {
-		console.log("Login User: ", user);
+		// console.log("Login User: ", user);
 		return <Navigate to={from} replace={true} />;
 	}
 
@@ -109,6 +110,7 @@ const Login = () => {
 							Login
 						</button>
 					</form>
+					<SocialLogin />
 				</div>
 			</div>
 		</div>
