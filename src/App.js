@@ -5,8 +5,10 @@ import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import Login from "./Authentication/Login";
 import Registration from "./Authentication/Registration";
+import RequiredAuth from "./Authentication/RequiredAuth";
 import Header from "./Header";
 import Home from "./Pages/Home";
+import AddTask from "./Pages/Tasks/AddTask";
 
 function App() {
 	return (
@@ -16,6 +18,14 @@ function App() {
 				<Route path='/' element={<Home />} />
 				<Route path='/login' element={<Login />} />
 				<Route path='/register' element={<Registration />} />
+				<Route
+					path='/addTask'
+					element={
+						<RequiredAuth>
+							<AddTask />
+						</RequiredAuth>
+					}
+				/>
 			</Routes>
 			<ToastContainer />
 		</BrowserRouter>
